@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Çok Önemli Bir Soru</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.box{
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  width:320px;
+  text-align:center;
+  position:relative;
+}
+
+button{
+  padding:12px 25px;
+  font-size:16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  margin:10px;
+}
+
+.yes{
+  background:#4CAF50;
+  color:white;
+}
+
+.no{
+  background:#f44336;
+  color:white;
+  position:absolute;
+}
+
+/* POPUP */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  visibility:hidden;
+  z-index:999;
+}
+
+.popup-content{
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+  animation:pop 0.4s ease;
+}
+
+@keyframes pop{
+  from{transform:scale(0)}
+  to{transform:scale(1)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="step1">
+  <h2>🥺</h2>
+  <p>Beni affettin mi?</p>
+  <button class="yes" id="yes1">EVET</button>
+  <button class="no">Hayır</button>
+</div>
+
+<div class="box" id="step2" style="display:none;">
+  <h2>💍</h2>
+  <p>O zaman benimle evlenir misin?</p>
+  <button class="yes" id="yes2">EVET</button>
+  <button class="no">Hayır</button>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h1>💍 SHE SAID YESSS 💍</h1>
+    <p>Artık resmen müstakbel karımsın 😌</p>
+    <h2>Seni seviyorum ❤️</h2>
+  </div>
+</div>
+
+<script>
+function escape(btn, box){
+  btn.addEventListener("mouseover",()=>{
+    const maxX = box.clientWidth - btn.offsetWidth;
+    const maxY = box.clientHeight - btn.offsetHeight;
+    btn.style.left = Math.random()*maxX + "px";
+    btn.style.top = Math.random()*maxY + "px";
+  });
+}
+
+// step1
+const step1 = document.getElementById("step1");
+escape(step1.querySelector(".no"), step1);
+
+// step2
+const step2 = document.getElementById("step2");
+escape(step2.querySelector(".no"), step2);
+
+// geçişler
+document.getElementById("yes1").onclick = ()=>{
+  step1.style.display="none";
+  step2.style.display="block";
+};
+
+document.getElementById("yes2").onclick = ()=>{
+  document.getElementById("popup").style.visibility="visible";
+};
+</script>
+
+</body>
+</html>
