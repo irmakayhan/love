@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>son bir şey</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:'Inter','Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#ff5f9e,#ffc371);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* FLOATING HEARTS */
+.bg-heart{
+  position:absolute;
+  bottom:-40px;
+  font-size:22px;
+  animation:float 7s linear forwards;
+}
+
+@keyframes float{
+  from{transform:translateY(0) scale(.6);opacity:1}
+  to{transform:translateY(-120vh) scale(1.4);opacity:0}
+}
+
+/* BOX */
+.box{
+  background:rgba(255,255,255,.96);
+  padding:45px 40px;
+  border-radius:30px;
+  width:360px;
+  text-align:center;
+  position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,.25);
+  backdrop-filter:blur(10px);
+}
+
+h1{font-size:34px}
+p{font-size:18px;line-height:1.4}
+
+button{
+  padding:14px 36px;
+  border:none;
+  border-radius:999px;
+  font-size:16px;
+  cursor:pointer;
+  background:#ff3d7f;
+  color:white;
+}
+
+button:hover{transform:scale(1.05)}
+
+/* GAME */
+.game-area{
+  position:relative;
+  height:200px;
+  margin-top:20px;
+}
+
+/* PROPOSAL FX */
+.countdown{
+  font-size:42px;
+  font-weight:600;
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+  100%{transform:scale(1)}
+}
+
+.fade{
+  animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px)}
+  to{opacity:1; transform:none}
+}
+
+/* POPUP */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  visibility:hidden;
+  z-index:999;
+}
+
+.popup-content{
+  background:white;
+  padding:55px;
+  border-radius:35px;
+  text-align:center;
+  animation:pop .45s ease;
+}
+
+@keyframes pop{
+  from{transform:scale(.4);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+</style>
+</head>
+
+<body>
+
+<!-- STEP 1 -->
+<div class="box" id="step1">
+  <h1>mini görev</h1>
+  <p>3 kalp yakala 💖</p>
+  <div class="game-area" id="game"></div>
+  <p id="counter">0 / 3</p>
+</div>
+
+<!-- STEP 2 -->
+<div class="box" id="step2" style="display:none;">
+  <h1 id="finalTitle">tamam</h1>
+  <p id="finalText">son bir şey var</p>
+  <div id="finalArea"></div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h1>YASASIN</h1>
+    <h2>artik resmi olarak esimsin 💖 </h2>
+  </div>
+</div>
+
+<script>
+let score = 0;
+const game = document.getElementById("game");
+const counter = document.getElementById("counter");
+
+const interval = setInterval(()=>{
+  const h = document.createElement("div");
+  h.style.position="absolute";
+  h.style.fontSize="28px";
+  h.style.cursor="pointer";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*260+"px";
+  h.style.top=Math.random()*150+"px";
+
+  h.onclick=()=>{
+    h.remove();
+    score++;
+    counter.innerText = score+" / 3";
+
+    if(score===3){
+      clearInterval(interval);
+      setTimeout(()=>{
+        step1.style.display="none";
+        step2.style.display="block";
+        startProposal();
+      },700);
+    }
+  };
+
+  game.appendChild(h);
+  setTimeout(()=>h.remove(),1500);
+},650);
+
+/* FINAL EVENT */
+function startProposal(){
+  const area = document.getElementById("finalArea");
+  area.innerHTML = `<div class="countdown">3</div>`;
+
+  let n = 3;
+  const cd = setInterval(()=>{
+    n--;
+    if(n>0){
+      area.innerHTML = `<div class="countdown">${n}</div>`;
+    }else{
+      clearInterval(cd);
+      showQuestion();
+    }
+  },1000);
+}
+
+function showQuestion(){
+  const area = document.getElementById("finalArea");
+  area.innerHTML = `
+    <div class="fade">
+      <p>seni cok seviyorum</p>
+      <h1>benimle evlenir misin?</h1>
+      <button onclick="yes()">EVET 🥹</button>
+    </div>
+  `;
+}
+
+/* YES */
+function yes(){
+  document.getElementById("popup").style.visibility="visible";
+}
+
+/* BG HEARTS */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="bg-heart";
+  h.innerHTML=Math.random()>0.5?"❤️":"💖";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
+},300);
+</script>
+
+</body>
+</html>
